@@ -1,23 +1,25 @@
 import streamlit as st
-
-if "message_history" not in st.session_state:
-    st.session_state.message_history = []
-if "is_user" not in st.session_state:
-    st.session_state.is_user = True
+from utils.inference.service import AI71Inference
 
 def chatbot_ui():
-    query = st.chat_input("Say something")
+    if "message_history" not in st.session_state:
+        st.session_state.message_history = []
 
-    if query:
-        if st.session_state.is_user:
-            st.session_state.message_history.append({"role":"user","content":str(query)})
-            st.session_state.is_user = False
-        else:
-            st.session_state.message_history.append({"role":"system", "content": str(query)})
-            st.session_state.is_user = True
+    LLM = AI71Inference()
+    
+    for chat in st.session_state.message_history:
+        with st.chat_message(chat['role']):
+            st.markdown(chat['content'])
+    
+    
+
+    if query:= st.chat_input("Say something"):
+        st.session_state.message_history.append({"role":"user","content":str(query)})
+
+        with st.chat_message("user"):
+            st.markdown(query)
+        
+        with st.chat_message("assistant"):
+            response = st.write_stream(LLM.inference(history=st.session_state.message_history))
             
-        for chat in st.session_state.message_history:
-            if chat["role"] == "user":
-                st.chat_message("user").write(chat['content'])    
-            else:
-                st.chat_message("bot").write(chat['content']) 
+        st.session_state.message_history.append({"role":"assistant","content": response})

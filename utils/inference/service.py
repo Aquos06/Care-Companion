@@ -27,33 +27,24 @@ class AI71Inference:
                                 Always prioritize patient safety, confidentiality, and ethical medical practices in all interactions.
                             """
         
-    def __reformat_history__(self, history_list: List[str]) -> List[dict]:
+    def __reformat_history__(self, history_list: List[dict]) -> List[dict]:
         formatted_history = [{"role":"system", "content":self.system_prompt}]
-        
-        if history_list:
-            for index, history in enumerate(history_list):
-                if index % 2 == 0:
-                    formatted_history.append({"role":"user","content": history})
-                else:
-                    formatted_history.append({"role": "assistant","content": history})
-                    
+        formatted_history.extend(history_list)
         return formatted_history
         
-        
-    def inference(self,query:str, history: List[str]=None):
+    def inference(self,history: List[dict]=None):
         formated_history = self.__reformat_history__(history_list=history)
-        formated_history.append({"role": "user","content": query})
         
-        temp_chunk = ""
         for chunk in self.client.chat.completions.create(
             messages=formated_history,
             model="tiiuae/falcon-180B-chat",
+            top_p=0.2,
+            top_k=50,
             stream=True
         ):
             delta_content = chunk.choices[0].delta.content
             if delta_content:
-                temp_chunk += delta_content
-                print(temp_chunk)
+                yield delta_content
                 
 if __name__ == '__main__':
     ai_inference = AI71Inference()
