@@ -6,8 +6,8 @@ if "patient_complaint" not in st.session_state:
     st.session_state.patient_complaint = ""
 if "patient_drugs" not in st.session_state:
     st.session_state.patient_drugs = ""
-
-
+if "patient_diseases" not in st.session_state:
+    st.session_state.patient_diseases = ""
 
 def analyze_ui():
     patient_name = st.text_input("Patient Name")
@@ -20,8 +20,12 @@ def analyze_ui():
     if patient_complaint:
         st.session_state.patient_complaint = patient_complaint
         
+    patient_diseases = st.text_input("Type Final Diseases")
+    if patient_diseases:
+        st.session_state.patient_diseases = patient_diseases
+    
     patient_drugs = st.text_input("Type Patient Drugs")
     if patient_drugs:
         st.session_state.patient_drugs = patient_drugs
-    
+        
     export_drugs_document = st.button("Export Report")
