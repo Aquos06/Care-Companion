@@ -10,11 +10,11 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
         f"""CREATE (p:Patient {{
             patient_id: "{patient_id}",
             full_name: "{full_name}",
-            birth_date: date("{birth_date.isoformat()}"),
             gender: "{gender}",
             address: "{address}",
             phone_number: "{phone_number}",
-            email_addr: "{email_addr}"
+            email_addr: "{email_addr}",
+            birth_date: date("{birth_date.isoformat()}")
         }})""",
 
         f"""CREATE (cm:CurrentMedications {{
@@ -30,12 +30,14 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
         f"""MATCH (p:Patient {{patient_id: "{patient_id}"}}),
             (cm:CurrentMedications {{patient_id: "{patient_id}"}})
             CREATE (p)-[:HAS_CURRENT_MEDICATIONS]->(cm)""",
+            
         f"""MATCH (p:Patient {{patient_id: "{patient_id}"}}),
             (fmh:FamilyMedicalHistory {{patient_id: "{patient_id}"}})
             CREATE (p)-[:HAS_FAMILY_MEDICAL_HISTORY]->(fmh)"""
     ]
     
     graph = Neo4Graph()
+    graph.delete_all()
     graph.execute_query(queries=cypher)
     
     
@@ -52,7 +54,7 @@ def create_new_member_ui():
     
     if st.button("Save"):
         make_new(
-            full_name=full_name,
+            full_name=full_name.lower(),
             birth_date=birthday,
             gender=gender,
             address=address,
