@@ -1,14 +1,16 @@
 from neo4j import GraphDatabase
 from typing import List, Dict
+from utils.const import NEO4J_PASSWORD, NEO4J_USERNAME, NEO4J_URI
 
 class Neo4Graph:
-    def __init__(self, uri: str, username: str, password:str) -> None:
-        self.driver = GraphDatabase.driver(uri=uri, auth=(username,password))
+    def __init__(self) -> None:
+        self.driver = GraphDatabase.driver(uri=NEO4J_URI, auth=(NEO4J_USERNAME,NEO4J_PASSWORD))
         
     def execute_query(self, queries: List[str]):
         with self.driver.session() as session:
             for query in queries:
                 session.run(query)
+                
     def close(self):
         if self.driver is not None:
             self.driver.close()
