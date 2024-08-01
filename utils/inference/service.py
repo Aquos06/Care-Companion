@@ -46,6 +46,17 @@ class AI71Inference:
             if delta_content:
                 yield delta_content
                 
+    def make_suggestion(self, history: List[dict]):
+        response = self.client.chat.completions.create(
+            messages=history,
+            model="tiiuae/falcon-180B-chat",
+            top_k=50,
+            top_p=0.2,
+        )
+        
+        delta_content = response.choices[0].message.content
+        return delta_content
+                
 if __name__ == '__main__':
     ai_inference = AI71Inference()
     ai_inference.inference(query="Hai")
