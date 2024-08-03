@@ -9,6 +9,7 @@ NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
 NEO4J_URI = os.getenv("NEO4J_URI")
 AURA_INSTANCEID = os.getenv("AURA_INSTANCEID")
 AURA_INSTANCENAME = os.getenv("AURA_INSTANCENAME")
+BRAVE_API_KEY=os.getenv("BRAVE_API_KEY")
 DOCTOR = [
     {"name": "Dr. John Smith", "specialization": "Cardiology", "award": "Best Cardiologist 2021", "school": "Harvard Medical School", "specialization_explanation": "Deals with disorders of the heart and blood vessels."},
     {"name": "Dr. Emily Davis", "specialization": "Neurology", "award": "Excellence in Neurology Award 2020", "school": "Johns Hopkins University", "specialization_explanation": "Treats disorders of the nervous system."},
