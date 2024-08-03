@@ -46,6 +46,16 @@ class AI71Inference:
             if delta_content:
                 yield delta_content
                 
+    def patient_inference(self, history: List[dict]):
+        
+        response=  self.client.chat.completions.create(
+            messages=history,
+            model="tiiuae/falcon-180B-chat",
+            top_p=0.2,
+            top_k=50,
+        )
+        return response  
+       
     def make_suggestion(self, history: List[dict]):
         response = self.client.chat.completions.create(
             messages=history,
