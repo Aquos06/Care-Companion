@@ -54,7 +54,7 @@ class AI71Inference:
         
         response=  self.client.chat.completions.create(
             messages=history,
-            model="tiiuae/falcon-180B-chat",
+            model="tiiuae/falcon-11B-chat",
             top_p=0.2,
             top_k=50,
         )
