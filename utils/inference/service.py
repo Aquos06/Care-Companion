@@ -25,6 +25,7 @@ class AI71Inference:
                                 - Provide references to the latest medical research and guidelines.
 
                                 Always prioritize patient safety, confidentiality, and ethical medical practices in all interactions.
+                                DO NOT use User: in your response.
                             """
         
     def __reformat_history__(self, history_list: List[dict]) -> List[dict]:
@@ -32,12 +33,12 @@ class AI71Inference:
         formatted_history.extend(history_list)
         return formatted_history
         
-    def inference(self,history: List[dict]=None):
+    def inference(self,links,history: List[dict]=None):
         formated_history = self.__reformat_history__(history_list=history)
         
         for chunk in self.client.chat.completions.create(
             messages=formated_history,
-            model="tiiuae/falcon-180B-chat",
+            model="tiiuae/falcon-11B-chat",
             top_p=0.2,
             top_k=50,
             stream=True
@@ -45,6 +46,9 @@ class AI71Inference:
             delta_content = chunk.choices[0].delta.content
             if delta_content:
                 yield delta_content
+            
+        if links:
+            yield links
                 
     def patient_inference(self, history: List[dict]):
         
