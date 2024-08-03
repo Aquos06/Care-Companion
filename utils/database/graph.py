@@ -29,3 +29,5 @@ class Neo4Graph:
                 result = session.execute_read(run_query, query)
                 results.append(result)
         return results
+        #TODO format results to a normal strings
+    
