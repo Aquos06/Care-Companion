@@ -1,7 +1,6 @@
 ai71==0.0.18
 beautifulsoup4==4.12.3
 neo4j==5.22.0
-neo4j==5.23.0
 numpy==2.0.1
 pandas==2.2.2
 python-dotenv==1.0.1
