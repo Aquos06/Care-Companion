@@ -4,7 +4,7 @@ neo4j==5.22.0
 numpy==1.24.4
 pandas==2.2.2
 python-dotenv==1.0.1
-python_bcrypt==0.3.2
 Requests==2.32.3
 streamlit==1.37.0
+bcrypt==4.2.0
 git+https://github.com/kayvane1/brave-api

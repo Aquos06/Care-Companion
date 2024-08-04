@@ -17,7 +17,7 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
             address: "{address}",
             phone_number: "{phone_number}",
             email_addr: "{email_addr}",
-            password: "{hashed_password}",
+            password: "{hashed_password.decode('utf-8')}",
             birth_date: date("{birth_date.isoformat()}")
         }})""",
 
