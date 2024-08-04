@@ -1,15 +1,16 @@
-import os
-from dotenv import load_dotenv
+import toml
 
-load_dotenv()
+# Load the .toml file
+config = toml.load('config.toml')
 
-AI71_API_KEY = os.getenv("AI71_API_KEY")
-NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
-NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
-NEO4J_URI = os.getenv("NEO4J_URI")
-AURA_INSTANCEID = os.getenv("AURA_INSTANCEID")
-AURA_INSTANCENAME = os.getenv("AURA_INSTANCENAME")
-BRAVE_API_KEY=os.getenv("BRAVE_API_KEY")
+# Access the values
+AI71_API_KEY = config['api']['ai71_api_key']
+NEO4J_PASSWORD = config['neo4j']['password']
+NEO4J_USERNAME = config['neo4j']['username']
+NEO4J_URI = config['neo4j']['uri']
+AURA_INSTANCEID = config['aura']['instanceid']
+AURA_INSTANCENAME = config['aura']['instancename']
+BRAVE_API_KEY = config['brave']['api_key']
 DOCTOR = [
     {"name": "Dr. John Smith", "specialization": "Cardiology", "award": "Best Cardiologist 2021", "school": "Harvard Medical School", "specialization_explanation": "Deals with disorders of the heart and blood vessels."},
     {"name": "Dr. Emily Davis", "specialization": "Neurology", "award": "Excellence in Neurology Award 2020", "school": "Johns Hopkins University", "specialization_explanation": "Treats disorders of the nervous system."},
