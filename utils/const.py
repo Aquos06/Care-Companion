@@ -4,13 +4,13 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-AI71_API_KEY = st.secrets["AI71_API_KEY"]
-NEO4J_PASSWORD = st.secrets["NEO4J_PASSWORD"]
-NEO4J_USERNAME = st.secrets["NEO4J_USERNAME"]
-NEO4J_URI = st.secrets["NEO4J_URI"]
-AURA_INSTANCEID = st.secrets["AURA_INSTANCEID"]
-AURA_INSTANCENAME = st.secrets["AURA_INSTANCENAME"]
-BRAVE_API_KEY=st.secrets["BRAVE_API_KEY"]
+AI71_API_KEY = st.secrets["api_keys"]["AI71_API_KEY"]
+NEO4J_PASSWORD = st.secrets["neo4j"]["NEO4J_PASSWORD"]
+NEO4J_USERNAME = st.secrets["neo4j"]["NEO4J_USERNAME"]
+NEO4J_URI = st.secrets["neo4j"]["NEO4J_URI"]
+AURA_INSTANCEID = st.secrets["neo4j"]["AURA_INSTANCEID"]
+AURA_INSTANCENAME = st.secrets["neo4j"]["AURA_INSTANCENAME"]
+BRAVE_API_KEY=st.secrets["api_keys"]["BRAVE_API_KEY"]
 # AI71_API_KEY = os.getenv("AI71_API_KEY")
 # NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")
 # NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
