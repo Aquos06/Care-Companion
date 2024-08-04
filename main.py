@@ -7,6 +7,7 @@ from page.user.create_new import create_new_member_ui
 from page.user.register import register_ui
 from page.user.doctor_list import doctor_list_ui
 from page.user.patient_chatbot import chatbot_patient_ui
+from page.admin.patient_list import patient_list_ui
 from utils.auth.login import login
 
 if "mode" not in st.session_state:
@@ -62,6 +63,7 @@ login_page = st.Page(login_page_ui, title="Login")
 
 chatbot_page = st.Page(chatbot_ui, title="Chatbot")
 analyze_page = st.Page(analyze_ui, title="Anaylze Patient")
+patient_list_page = st.Page(patient_list_ui, title="Patient List")
 
 register_page = st.Page(create_new_member_ui, title="Register New Member")
 schedule_page = st.Page(register_ui, title="Register Schedule")
@@ -74,7 +76,7 @@ if st.session_state.mode == PageType.NULL:
     pg=st.navigation([dashboard_page])
 elif st.session_state.mode == PageType.ADMIN:
     pg = st.navigation({
-        "Dashboard": [chatbot_page, analyze_page],
+        "Dashboard": [chatbot_page, analyze_page,patient_list_page],
         "Navigation": [goback_page]
         })
 elif st.session_state.mode == PageType.PATIENT:
