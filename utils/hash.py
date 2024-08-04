@@ -12,4 +12,4 @@ def hash_password(password):
 
 
 def verify_password(stored_password, provided_password):
-    return bcrypt.checkpw(str(provided_password), stored_password.encode('utf-8'))
+    return bcrypt.checkpw(provided_password.encode('utf-8'), stored_password.encode('utf-8'))
