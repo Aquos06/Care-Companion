@@ -21,7 +21,7 @@ def make_suggestion(symptoms):
     suggestion = AI71.make_suggestion(history=prompt)
     return suggestion
 
-def make_new_medical_history(full_name, patient_id, symptoms, date, time):
+def make_new_medical_history(full_name, email, symptoms, date, time):
     cypher = [
         f"""
             CREATE (fmh:MedicalHistory {{
@@ -32,7 +32,7 @@ def make_new_medical_history(full_name, patient_id, symptoms, date, time):
             }})
         """,
         f"""
-            MATCH(p:Patient {{full_name: "{full_name}", patient_id: "{patient_id}"}}),
+            MATCH(p:Patient {{full_name: "{full_name}", email: "{email}"}}),
             (fmh:MedicalHistory {{symptoms: "{symptoms}", date: date("{date.isoformat()}")}})
             CREATE (p)-[:HAS_MEDICAL_HISTORY]->(fmh)
         """
@@ -46,8 +46,8 @@ def register_ui():
         st.session_state.suggestion = ""
     
     full_name = st.text_input("Full Name")
-    patient_id = st.text_input("Patient Id")
-    symptoms = st.text_area("Symptomps")
+    email = st.text_input("Email")
+    symptoms = st.text_area("Symptoms")
     
     if symptoms and st.session_state.suggestion == "":
         suggestion = make_suggestion(symptoms=symptoms)
@@ -66,7 +66,7 @@ def register_ui():
     if st.button("Save"):
         make_new_medical_history(
             full_name=full_name.lower(),
-            patient_id=patient_id,
+            email=email,
             symptoms=symptoms,
             date=date,
             time=time
