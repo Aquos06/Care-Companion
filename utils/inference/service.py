@@ -24,6 +24,9 @@ class AI71Inference:
                                 - Offer up-to-date information on diseases, conditions, and medical procedures.
                                 - Provide references to the latest medical research and guidelines.
 
+                                5. **Patient Infromation**
+                                - The Latest Patient infromation will be given, you need to summarize the patient Information
+                                
                                 Always prioritize patient safety, confidentiality, and ethical medical practices in all interactions.
                                 DO NOT use User: in your response.
                             """
@@ -38,10 +41,11 @@ class AI71Inference:
         
         for chunk in self.client.chat.completions.create(
             messages=formated_history,
-            model="tiiuae/falcon-11B-chat",
+            model="tiiuae/falcon-180B-chat",
             top_p=0.2,
             top_k=50,
-            stream=True
+            stream=True,
+            temperature=0.1
         ):
             delta_content = chunk.choices[0].delta.content
             if delta_content:
@@ -52,13 +56,16 @@ class AI71Inference:
                 
     def patient_inference(self, history: List[dict]):
         
-        response=  self.client.chat.completions.create(
+        for chunk in self.client.chat.completions.create(
             messages=history,
             model="tiiuae/falcon-11B-chat",
             top_p=0.2,
             top_k=50,
-        )
-        return response  
+            stream= True
+        ):
+            delta_content = chunk.choices[0].delta.content
+            if delta_content:
+                yield delta_content
        
     def make_suggestion(self, history: List[dict]):
         response = self.client.chat.completions.create(

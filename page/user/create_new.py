@@ -1,11 +1,15 @@
 import datetime
+import uuid
 import streamlit as st
+
+from utils.hash import hash_password
 from type.page import PageType
 from utils.database.graph import Neo4Graph
-import uuid
 
-def make_new(full_name, birth_date, gender, address, phone_number, email_addr, current_medications,family_medical_history):
+def make_new(full_name, birth_date, gender, address, phone_number, email_addr, current_medications,family_medical_history, password):
     patient_id = uuid.uuid4()
+    hashed_password = hash_password(password=password)
+    print(f"email_addr: {email_addr}")
     cypher =[
         f"""CREATE (p:Patient {{
             patient_id: "{patient_id}",
@@ -14,6 +18,7 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
             address: "{address}",
             phone_number: "{phone_number}",
             email_addr: "{email_addr}",
+            password: "{hashed_password.decode('utf-8')}",
             birth_date: date("{birth_date.isoformat()}")
         }})""",
 
@@ -44,6 +49,7 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
 
 def create_new_member_ui():
     full_name = st.text_input("Full Name")
+    password = st.text_input("Password", type="password")
     birthday = st.date_input("Birth Date", datetime.date(2000,9,18))
     gender = st.selectbox("Gender",('Men','Women'))
     address = st.text_input("Address")
@@ -57,6 +63,7 @@ def create_new_member_ui():
             full_name=full_name.lower(),
             birth_date=birthday,
             gender=gender,
+            password=password,
             address=address,
             phone_number=phone_number,
             email_addr=email_addr,

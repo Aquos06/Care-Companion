@@ -1,5 +1,4 @@
 import streamlit as st
-from datetime import datetime
 from utils.database.graph import Neo4Graph
 from utils.inference.service import AI71Inference
 
@@ -64,11 +63,11 @@ def analyze_ui():
     if "patient_medical_history" not in st.session_state:
         st.session_state.patient_medical_history = ""
     if "patient_summary" not in st.session_state:
-        st.session_state.patient_summary = ""
+        st.session_state.patient_summary = "Patient Summary Loading..."
     if "patient_diagnose" not in st.session_state:
-        st.session_state.patient_diagnose = ""
+        st.session_state.patient_diagnose = "Analyze Dieases Loading..."
     if "patient_medicine_list" not in st.session_state:
-        st.session_state.patient_medicine_list = ""
+        st.session_state.patient_medicine_list = "Medicine List Suggestion Loading..."
     if "patient_name" not in st.session_state:
         st.session_state.patient_name=""
     if "patient_id" not in st.session_state:
@@ -80,7 +79,7 @@ def analyze_ui():
         
     patient_name = st.text_input("Patient Name")
     patient_id = st.text_input("Patient Id")
-    if patient_name and patient_id and (st.session_state.patient_summary == "" or st.session_state.patient_name != patient_name or st.session_state.patient_id != patient_id):
+    if patient_name and patient_id and (st.session_state.patient_summary == "Patient Summary Loading..." or st.session_state.patient_name != patient_name or st.session_state.patient_id != patient_id):
         st.session_state.patient_name = patient_name
         st.session_state.patient_id = patient_id
         patient_summary = get_patient_summary(patient_name=patient_name, patient_id=patient_id)
@@ -88,24 +87,24 @@ def analyze_ui():
         st.markdown(f"Patient Information Summary")
         st.markdown(patient_summary)
     else:
-        st.markdown(f"Patient Summary Loading...")
+        st.markdown(f"{st.session_state.patient_summary}")
     
     patient_complaint = st.text_input("Type the patient's complaint")
-    if patient_complaint  and patient_id and (st.session_state.patient_diagnose == "" or st.session_state.patient_complaint != patient_complaint):
+    if patient_complaint  and patient_id and (st.session_state.patient_diagnose == "Analyze Dieases Loading..." or st.session_state.patient_complaint != patient_complaint):
         st.session_state.patient_complaint = patient_complaint
         patient_diagnose = get_patient_hypotesis(patient_name=patient_name, patient_id=patient_id, patient_complaint=patient_complaint)
         st.session_state.patient_diagnose = patient_diagnose
         st.markdown(f"Patient Diagnose")
         st.markdown(f"{patient_diagnose}")
     else:
-        st.markdown("Analyze Dieases Loading...")
+        st.markdown(st.session_state.patient_diagnose)
         
     patient_diseases = st.text_input("Type Final Diseases")
-    if patient_diseases and (st.session_state.patient_medicine_list == "" or st.session_state.patient_dieases != patient_diseases) :
+    if patient_diseases and (st.session_state.patient_medicine_list == "Medicine List Suggestion Loading..." or st.session_state.patient_dieases != patient_diseases) :
         st.session_state.patient_diseases = patient_diseases
         medicine_list = get_patient_medicines(patient_dieases=patient_diseases)
         st.session_state.patient_medicine_list = medicine_list
         st.markdown("Medicine Suggestion List")
         st.markdown(medicine_list)
     else:
-        st.markdown("Medicine List Suggestion Loading...")
+        st.markdown(st.session_state.patient_medicine_list)
