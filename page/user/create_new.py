@@ -41,7 +41,6 @@ def make_new(full_name, birth_date, gender, address, phone_number, email_addr, c
     ]
     
     graph = Neo4Graph()
-    graph.delete_all()
     graph.execute_query(queries=cypher)
     
     
