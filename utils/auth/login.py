@@ -5,10 +5,7 @@ def login(email:str, password: str):
     graph = Neo4Graph()
     cypher = [f"MATCH (p:Patient {{email_addr: '{email}'}}) RETURN p.password"]
     patient_password = graph.read_transaction(cypher)
-    try:
-        if patient_password[0]:
-            pwd = patient_password[0][0]['p.password']
-            return verify_password(stored_password=pwd, provided_password=password)
-        return False
-    except:
-        return False
+    if patient_password and patient_password[0]:
+        pwd = patient_password[0][0]['p.password']
+        return verify_password(stored_password=pwd, provided_password=password)
+    return False
