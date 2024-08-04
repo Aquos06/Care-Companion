@@ -6,9 +6,8 @@ def hash_password(password):
         raise TypeError("Password must be a string")
     
     # Convert password to bytes
-    password_bytes = password.encode('utf-8')
     salt = bcrypt.gensalt()
-    hashed_password = bcrypt.hashpw(password_bytes, salt)
+    hashed_password = bcrypt.hashpw(password, salt)
     return hashed_password
 
 
