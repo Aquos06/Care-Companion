@@ -1,7 +1,7 @@
 import toml
 
 # Load the .toml file
-config = toml.load('config.toml')
+config = toml.load('.streamlit/config.toml')
 
 # Access the values
 AI71_API_KEY = config['api']['ai71_api_key']
