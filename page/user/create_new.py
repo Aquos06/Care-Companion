@@ -9,7 +9,6 @@ from utils.database.graph import Neo4Graph
 def make_new(full_name, birth_date, gender, address, phone_number, email_addr, current_medications,family_medical_history, password):
     patient_id = uuid.uuid4()
     hashed_password = hash_password(password=password)
-    print(f"email_addr: {email_addr}")
     cypher =[
         f"""CREATE (p:Patient {{
             patient_id: "{patient_id}",

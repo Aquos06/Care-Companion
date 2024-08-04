@@ -45,16 +45,35 @@ def get_patient_hypotesis(patient_name, patient_id, patient_complaint):
     patient_diagnose = AI71.make_suggestion(history=messages)
     return patient_diagnose
 
-def get_patient_medicines(patient_dieases):
+def get_patient_medicines(patient_diseases):
     messages = [{"role": "system","content": "You are an AI assistant designed to help doctor to decide patient's medicines according to its information and current dieases"},
                 {"role": "user","content": f"""Given a patient's dieases and patient's information. Give me a list of medicines and the rules for using the medicines.
                                                Patient Information: {st.session_state.patient_information}
                                                Patient Past Medical Record: {st.session_state.patient_medical_history}
-                                               Patient Dieases: {patient_dieases}"""}]
+                                               Patient Dieases: {patient_diseases}"""}]
     
     AI71 = AI71Inference()
     medicine_list = AI71.make_suggestion(history=messages)
     return medicine_list
+
+def save_medical_history():
+    cypher = [
+        f"""
+            CREATE(mh:MedicalHistory {{
+                diseases: "{st.session_state.patient_diseases}",
+                symptoms: "{st.session_state.patient_complaint}",
+                medicine: "{st.session_state.patient_medicine_list}",
+                patient_id: "{st.session_state.patient_id}"
+            }})
+        """,
+        f"""
+            MATCH (p: Patient {{patient_id: "{st.session_state.patient_id}"}}),
+            (mh:MedicalHistory {{patient_id: "{st.session_state.patient_id}"}})
+            CREATE (p)-[:HAS_MEDICAL_HISTORY]->(mh)
+        """
+    ]
+    graph = Neo4Graph()
+    graph.execute_query(queries=cypher)
     
 
 def analyze_ui():
@@ -74,8 +93,8 @@ def analyze_ui():
         st.session_state.patient_id=""
     if "patient_complaint" not in st.session_state:
         st.session_state.patient_complaint = ""
-    if "patient_dieases" not in st.session_state:
-        st.session_state.patient_dieases = ""
+    if "patient_diseases" not in st.session_state:
+        st.session_state.patient_diseases = ""
         
     patient_name = st.text_input("Patient Name")
     patient_id = st.text_input("Patient Id")
@@ -100,11 +119,14 @@ def analyze_ui():
         st.markdown(st.session_state.patient_diagnose)
         
     patient_diseases = st.text_input("Type Final Diseases")
-    if patient_diseases and (st.session_state.patient_medicine_list == "Medicine List Suggestion Loading..." or st.session_state.patient_dieases != patient_diseases) :
+    if patient_diseases and (st.session_state.patient_medicine_list == "Medicine List Suggestion Loading..." or st.session_state.patient_diseases != patient_diseases) :
         st.session_state.patient_diseases = patient_diseases
-        medicine_list = get_patient_medicines(patient_dieases=patient_diseases)
+        medicine_list = get_patient_medicines(patient_diseases=patient_diseases)
         st.session_state.patient_medicine_list = medicine_list
         st.markdown("Medicine Suggestion List")
         st.markdown(medicine_list)
     else:
         st.markdown(st.session_state.patient_medicine_list)
+        
+    if st.button("Save"):
+        save_medical_history()
