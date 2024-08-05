@@ -75,12 +75,18 @@ def format_user_query():
         if str(name).lower() in str(last_user_query['content']).lower():
             cypher = [f"MATCH (p:Patient {{full_name: '{name}'}})-[r]->(related) RETURN p,r,related"]
             patient_record = graph.read_transaction(queries=cypher)
-            user_query[-1]["content"] = f"""
-                                        DO NOT ADD ADD SUGGESTION OR INFORMATION
-                                        Patient Information: {reformat_patient_record(patient_record=patient_record[0])}
-                                        {last_user_query['content']}
-                                        """
-            print(user_query[-1])
+            if patient_record:
+                user_query[-1]["content"] = f"""
+                                            DO NOT ADD ADD SUGGESTION OR INFORMATION
+                                            Patient Information: {reformat_patient_record(patient_record=patient_record[0])}
+                                            {last_user_query['content']}
+                                            """
+            else:
+                user_query[-1]["content"] = f"""
+                            DO NOT ADD ADD SUGGESTION OR INFORMATION
+                            Patient Information: None
+                            {last_user_query['content']}
+                            """
             return [user_query[-1]]
         
     search_result = web_search(query=str(last_user_query['content']))
