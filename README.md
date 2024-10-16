@@ -1,5 +1,6 @@
 # <p align="center"> Care Companion </p>
 Care Companion is a LLM companion for doctors and pantients. Using the ability of LLM, it aimed to be doctor's and patients personal assistant 
+Here is our [demo](https://carecompanion.streamlit.app/)
 
 ![Download the video](./assets/complit.mp4)
 
