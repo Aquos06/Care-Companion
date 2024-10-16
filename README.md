@@ -2,7 +2,7 @@
 Care Companion is a LLM companion for doctors and pantients. Using the ability of LLM, it aimed to be doctor's and patients personal assistant 
 Here is our [demo](https://carecompanion.streamlit.app/)
 
-![Download the video](./assets/complit.mp4)
+![video](./assets/video.gif)
 
 # Key Features of Care Companion ⭐
 - **Chatbot for Doctor** : Utilizating RAG and Brave API, we give the every doctor its own personal assitant. You can ask any information about patients' information, latest medical paper, and many more
